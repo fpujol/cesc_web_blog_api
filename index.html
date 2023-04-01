@@ -1,0 +1,37 @@
+<html>
+    <head></head>
+    <body>
+        <h1>Hello!</h1>
+        <button onclick="apiCall()">API CALL</button>
+        <script>
+            async function login() {
+                const response = await fetch("http://localhost:5000/user/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type":"application/json",
+                    },
+                    credentials: "include",
+                    body: JSON.stringify({
+                        email:"fpbosch@gmail.com",
+                        password: "1234"
+                    })
+                });
+                const data = await response.json();
+                console.log(data);
+            }
+
+            async function apiCall() {
+                const response = await fetch("http://localhost:5000/api/v1/post", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type":"application/json",
+                    },
+                    credentials: "include",
+                });
+                const data = await response.json();
+                console.log(data);
+            }
+            login();
+        </script>
+    </body>
+</html>

@@ -158,9 +158,10 @@ func (s *Server) UploadFile(c *gin.Context) {
 	originalFileName := strings.TrimSuffix(filepath.Base(header.Filename), filepath.Ext(header.Filename))
 	now := time.Now()
 	filename := strings.ReplaceAll(strings.ToLower(originalFileName), " ", "-") + "-" + fmt.Sprintf("%v", now.Unix()) + fileExt
-	filePath := "http://localhost:5000/images/" + filename
+	filePath := fmt.Sprintf("http://%s/%s/%s", s.config.HTTPServerAddress, s.config.PathPostsImages, filename) //"http://localhost:5000/posts/images/" + filename
 
-	out, err := os.Create("./public/images/" + filename)
+	out, err := os.Create(fmt.Sprintf("./public/%s/", s.config.PathPostsImages))
+
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -193,9 +194,11 @@ func (s *Server) UploadMainImageFile(c *gin.Context) {
 	originalFileName := strings.TrimSuffix(filepath.Base(header.Filename), filepath.Ext(header.Filename))
 	now := time.Now()
 	filename := strings.ReplaceAll(strings.ToLower(originalFileName), " ", "-") + "-" + fmt.Sprintf("%v", now.Unix()) + fileExt
-	filePath := "http://localhost:5000/images/" + filename
+	
+	filePath := fmt.Sprintf("http://%s/%s/%s", s.config.HTTPServerAddress, s.config.PathPostsImages, filename) //"http://localhost:5000/posts/images/" + filename
 
-	out, err := os.Create("./public/images/" + filename)
+	out, err := os.Create(fmt.Sprintf("./public/%s/%s", s.config.PathPostsImages, filename))
+	
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -242,9 +245,11 @@ func (s *Server) UploadThumbnailImageFile(c *gin.Context) {
 	originalFileName := strings.TrimSuffix(filepath.Base(header.Filename), filepath.Ext(header.Filename))
 	now := time.Now()
 	filename := strings.ReplaceAll(strings.ToLower(originalFileName), " ", "-") + "-" + fmt.Sprintf("%v", now.Unix()) + fileExt
-	filePath := "http://localhost:5000/images/" + filename
 
-	out, err := os.Create("./public/images/" + filename)
+	filePath := fmt.Sprintf("http://%s/%s/%s", s.config.HTTPServerAddress, s.config.PathPostsImages, filename) //"http://localhost:5000/posts/images/" + filename
+	//./public/posts/images/
+	out, err := os.Create(fmt.Sprintf("./public/%s/%s", s.config.PathPostsImages, filename))
+	
 	if err != nil {
 		log.Fatal(err)
 	}

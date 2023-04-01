@@ -27,11 +27,14 @@ sqlc-generate:
 mock:
 	mockgen -package mockdb -destination db/mock/store.go blogapi/db/sqlc Store
 
+build:
+	go build -o build ./...
+
 test:
 	go test -v -cover -short ./...
 
 server:
-	go run main.go
+	go run cmd/main.go
 
-.PHONY: createdb dropdb postgres migrateup migratedown sqlc-generate sqlc-init mock test server
+.PHONY: createdb dropdb postgres migrateup migratedown sqlc-generate sqlc-init mock test server build
 

@@ -159,8 +159,8 @@ func (s *Server) UploadFile(c *gin.Context) {
 	now := time.Now()
 	filename := strings.ReplaceAll(strings.ToLower(originalFileName), " ", "-") + "-" + fmt.Sprintf("%v", now.Unix()) + fileExt
 	filePath := fmt.Sprintf("http://%s/%s/%s", s.config.HTTPServerAddress, s.config.PathPostsImages, filename) //"http://localhost:5000/posts/images/" + filename
-
-	out, err := os.Create(fmt.Sprintf("./public/%s/", s.config.PathPostsImages))
+	
+	out, err := os.Create(fmt.Sprintf("./public/%s/%s", s.config.PathPostsImages, filename))
 
 	if err != nil {
 		log.Fatal(err)

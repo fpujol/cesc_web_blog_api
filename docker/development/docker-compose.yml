@@ -1,0 +1,66 @@
+version: "3.8"
+
+volumes:
+  shared-cesc-web-images:
+  shared-cesc-web-logs:
+
+networks:
+  cesc-web:
+
+services:
+  cesc-web-api-dev-linux-amd64:
+    environment:
+     - TZ=Europe/Madrid
+    # Configuration for building the docker image for the service
+    build:
+      # target: builder
+      context: ../../ # Use an image built from the specified dockerfile in the current directory.      
+      dockerfile: docker/development/Dockerfile
+      args:
+        OS: linux
+        ARCH: amd64
+    image: cesc-web-api
+    ports:
+     - "5000:5000" # Forward the exposed port 8080 on the container to port 8080 on the host machine
+    restart: unless-stopped
+    volumes:   
+      - shared-cesc-web-logs:/var/log
+      - shared-cesc-web-images:/app/public
+    networks: # Networks to join (Services on the same network can communicate with each other using their name)
+      - cesc-web      
+    
+  cesc-web-loki:
+    image: grafana/loki:2.5.0
+    environment:
+      - "TZ=Europe/Madrid"
+    ports:
+      - "3100:3100"
+    restart: unless-stopped
+    # volumes:
+    #   - C:\source\Ads\Ads\GoOtApi\ot-api-server\configs_loki:/etc/loki
+    command: -config.file=/etc/loki/loki-config.yaml
+    networks:
+      - cesc-web
+
+  cesc-web-promtail:
+    image: grafana/promtail:2.5.0
+    environment:
+      - "TZ=Europe/Madrid"
+    restart: unless-stopped
+    volumes:
+      - shared-cesc-web-logs:/var/log
+      # - C:\source\Ads\Ads\GoOtApi\ot-api-server\configs_promtail:/etc/promtail 
+    command: -config.file=/etc/promtail/promtail-config.yaml
+    depends_on:
+      - cesc-web-loki
+    networks:
+      - cesc-web    
+
+  cesc-web-grafana:
+    image: grafana/grafana:latest
+    environment:
+      - "TZ=Europe/Madrid"
+    ports:
+      - "3000:3000"
+    networks:
+      - cesc-web

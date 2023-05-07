@@ -20,6 +20,9 @@ migrateup:
 migratedown:
 	migrate -verbose -path $(MIGRATION_ROOT) -database "postgres://postgres:postgres@localhost:5432/$(DB)?sslmode=disable" down
 
+migrateup-production:
+	migrate -verbose -path $(MIGRATION_ROOT) -database "postgres://postgres:3sVJH96f56n10@postgres.indiketa.net:5432/$(DB)?sslmode=verify-full" up
+
 sqlc-init:
 	docker run --rm -v "%cd%:/src" -w /src kjconroy/sqlc init
 

@@ -81,3 +81,5 @@ jobs:
           file: ./docker/development/Dockerfile
           push: true
           tags: docker.indiketa.net/webapi_indiketa:latest
+
+          

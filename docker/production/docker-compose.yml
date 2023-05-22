@@ -15,7 +15,7 @@ services:
     build:
       # target: builder
       context: ../../ # Use an image built from the specified dockerfile in the current directory.      
-      dockerfile: docker/production/Dockerfile
+      dockerfile: docker/development/Dockerfile
       args:
         OS: linux
         ARCH: amd64

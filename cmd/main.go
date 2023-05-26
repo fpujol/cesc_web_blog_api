@@ -34,16 +34,16 @@ func main() {
 	}
 
 	log.Out = os.Stdout
-	
+	log.Info("Step 0")	
 	conn, err := sql.Open(config.DBDriver, config.DBSource)
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	log.Info("Step 1")
 	store := db.NewStore(conn) //.ConnectToStore(config)
-
+	log.Info("Step 2")
 	services.InitUser(ctx, store)
-
+	log.Info("Step 3")
 	runGinServer(log, ctx, config, store)
 
 }

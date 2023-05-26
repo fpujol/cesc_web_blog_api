@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"database/sql"
-	"fmt"
+	"os"
 
 	"blogapi/api"
 	db "blogapi/db/sqlc"
@@ -11,51 +11,51 @@ import (
 	"blogapi/util"
 
 	_ "github.com/lib/pq"
+	"github.com/sirupsen/logrus"
 )
 
 func main() {
-
 	ctx := context.Background()
+
+	var log = logrus.New()
 
 	config, err := util.LoadConfig(".")
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal(err)
 		//log.Fatal().Err(err).Msg("cannot load config")
 	}
 
-	if config.Environment == "development" {
-		//log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
+	if config.GinMode == "debug" {
+		log.Level = logrus.TraceLevel
+		log.Warn("you are in development mode!")
+	} else {
+		log.Level = logrus.InfoLevel
+		log.Warn("you are in production mode!")
 	}
 
+	log.Out = os.Stdout
+	
 	conn, err := sql.Open(config.DBDriver, config.DBSource)
 	if err != nil {
-		fmt.Println(err)
-		//log.Fatal().Err(err).Msg("cannot connect to db")
+		log.Fatal(err)
 	}
 
 	store := db.NewStore(conn) //.ConnectToStore(config)
 
 	services.InitUser(ctx, store)
 
-	runGinServer(ctx, config, store)
-
-	// s, err := api.NewServer(ctx, config, store)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	//log.Fatal().Err(err).Msg("cannot load config")
-	// }
-	// s.Start(config.HTTPServerAddress)
+	runGinServer(log, ctx, config, store)
 
 }
 
-func runGinServer(ctx context.Context, config util.Config, store db.Store) {
-	server, err := api.NewServer(ctx, config, store)
+func runGinServer(log *logrus.Logger, ctx context.Context, config util.Config, store db.Store) {
+	server, err := api.NewServer(log, ctx, config, store)
 	if err != nil {
-		//log.Fatal().Err(err).Msg("cannot create server")
+		log.Fatal(err)
 	}
 
 	err = server.Start(config.HTTPServerAddress)
 	if err != nil {
-		//log.Fatal().Err(err).Msg("cannot start server")
+		log.Fatal(err)
 	}
 }

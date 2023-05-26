@@ -12,9 +12,11 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 type Server struct {
+	log *logrus.Logger
 	context context.Context
 	config util.Config
 	store db.Store
@@ -22,7 +24,7 @@ type Server struct {
 	tokenMaker token.Maker
 }
 
-func NewServer(ctx context.Context, config util.Config, store db.Store) (*Server, error) {
+func NewServer(log *logrus.Logger, ctx context.Context, config util.Config, store db.Store) (*Server, error) {
 	
 	tokenMaker, err := token.NewPasetoMaker(config.TokenSymmetricKey)
 	
@@ -31,6 +33,7 @@ func NewServer(ctx context.Context, config util.Config, store db.Store) (*Server
 	}
 
 	server := &Server{
+		log: log,
 		context: ctx,
 		config:     config,
 		store:      store,

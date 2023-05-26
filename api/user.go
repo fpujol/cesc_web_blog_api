@@ -19,7 +19,8 @@ func (s *Server) Me(ctx *gin.Context) {
 }
 
 func (server *Server) loginUser(ctx *gin.Context) {
-    var req request.LoginUserRequest
+	server.log.Info("Login endpoint called!")
+	var req request.LoginUserRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
 		return

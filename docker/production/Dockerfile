@@ -10,8 +10,8 @@ COPY . .
 COPY prod.env ./app.env
 RUN go build -v -o build ./...
 
-# ENV GIN_MODE=release
-ENV HTTP_SERVER_ADDRESS=0.0.0.0:5000
+ENV GIN_MODE=release
+# ENV HTTP_SERVER_ADDRESS=0.0.0.0:5000
 ENV DB_SOURCE=postgresql://postgres:postgres@192.168.100.110:5432/cesc_blog?sslmode=disable
 
 CMD ["build/cmd"]

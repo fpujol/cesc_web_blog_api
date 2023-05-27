@@ -59,7 +59,7 @@ func (s *Server) Init() {
 
 func (s *Server) ConfigCors(r *gin.Engine) {
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"https://localhost:7050", "http://localhost:3000", "http://127.0.0.1:5500"},
+		AllowOrigins:     []string{"https://webapi.indiketa.net","https://localhost:7050", "http://localhost:3000", "http://127.0.0.1:5500"},
 		AllowMethods:     []string{"PUT", "PATCH", "POST"},
 		AllowHeaders:     []string{"Origin","Content-Type"},
 		ExposeHeaders:    []string{"Content-Length"},

@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"database/sql"
+	"os"
 
 	"blogapi/api"
 	db "blogapi/db/sqlc"
@@ -32,7 +33,7 @@ func main() {
 		log.Warn("you are in production mode!")
 	}
 
-	//log.Out = os.Stdout
+	log.Out = os.Stdout
 	log.Info("Step 0")	
 	conn, err := sql.Open(config.DBDriver, config.DBSource)
 	if err != nil {
@@ -41,7 +42,10 @@ func main() {
 	log.Info("Step 1")
 	store := db.NewStore(conn) //.ConnectToStore(config)
 	log.Info("Step 2")
-	services.InitUser(ctx, store)
+	_, err = services.InitUser(ctx, store)
+	if err != nil {
+		log.Error(err)
+	}
 	log.Info("Step 3")
 	runGinServer(log, ctx, config, store)
 

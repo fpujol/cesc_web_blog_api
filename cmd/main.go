@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"database/sql"
-	"os"
 
 	"blogapi/api"
 	db "blogapi/db/sqlc"
@@ -33,7 +32,7 @@ func main() {
 		log.Warn("you are in production mode!")
 	}
 
-	log.Out = os.Stdout
+	//log.Out = os.Stdout
 	log.Info("Step 0")	
 	conn, err := sql.Open(config.DBDriver, config.DBSource)
 	if err != nil {

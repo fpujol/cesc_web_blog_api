@@ -54,7 +54,6 @@ func (s *Server) Init() {
 	s.ConfigMaxFileUpload(r)
 	s.ConfigStaticAssets(r)
 	s.ConfigRoutes(r)
-	
 }
 
 func (s *Server) ConfigCors(r *gin.Engine) {

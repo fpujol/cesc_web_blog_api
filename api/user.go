@@ -75,7 +75,7 @@ func (server *Server) loginUser(ctx *gin.Context) {
 	}
 
 	ctx.SetSameSite(http.SameSiteNoneMode)
-	ctx.SetCookie("gin_cookie",accessToken, 60*60*24, "/","webapi.indiketa.net",true, true)
+	ctx.SetCookie("gin_cookie",accessToken, 60*60*24, "/posts/list","webbackend.indiketa.net",true, true)
 
 	rsp := response.LoginUserResponse{
 		SessionID:             session.ID,

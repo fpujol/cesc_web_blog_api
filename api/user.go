@@ -74,7 +74,7 @@ func (server *Server) loginUser(ctx *gin.Context) {
 		return
 	}
 
-	ctx.SetSameSite(http.SameSiteStrictMode)
+	ctx.SetSameSite(http.SameSiteNoneMode)
 
 	ctx.SetCookie("gin_cookie",accessToken, 60*60*24, "/","webapi.indiketa.net",true, true)
 
